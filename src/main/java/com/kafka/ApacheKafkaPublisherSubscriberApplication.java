@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kafka.model.Product;
+
 @SpringBootApplication
 @RestController
 public class ApacheKafkaPublisherSubscriberApplication {
@@ -19,9 +21,16 @@ public class ApacheKafkaPublisherSubscriberApplication {
 	
 	
 	@GetMapping("/publish/{name}")
-	public String publishMessageToTopic(@PathVariable String name) {
+	public String publishStringMessageToTopic(@PathVariable String name) {
 		template.send(topic,"Hi my name is " + name);
-		return "hello";
+		return "message type string published to topic";
+	}
+
+	
+	@GetMapping("/publish/json")
+	public String publishJsonMessageToTopic() {
+		template.send(topic,new Product(1,"product",1f));
+		return "message type json published to topic";
 	}
 
 	public static void main(String[] args) {
